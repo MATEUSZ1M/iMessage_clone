@@ -1,5 +1,7 @@
 .sidebar {
   flex: .35;
+  min-width: 320px;
+  max-width: 600px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -29,11 +31,12 @@
   border-radius: 5px;
 }
 
-.sidebar__input > input {
+.sidebar__input>input {
   background: transparent;
   border: none;
   outline: none;
   padding: 5px;
+  width: 100%;
 }
 
 .sidebar__chats {
