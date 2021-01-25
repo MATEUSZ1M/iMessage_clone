@@ -1,5 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
+import SidebarChat from "../SidebarChat/SidebarChat";
 import Avatar from "@material-ui/core/Avatar";
 import SearchIcon from "@material-ui/icons/Search";
 import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
@@ -15,10 +16,15 @@ function Sidebar() {
           <input type="text" placeholder="Search" />
         </div>
         <IconButton className="sidebar__inputButton" variant="outlined">
-          <RateReviewOutlinedIcon  />
+          <RateReviewOutlinedIcon />
         </IconButton>
       </div>
-      <div className="sidebar__chats"></div>
+      <div className="sidebar__chats">
+        <SidebarChat />
+        <SidebarChat />
+        <SidebarChat />
+        <SidebarChat />
+      </div>
     </div>
   );
 }
