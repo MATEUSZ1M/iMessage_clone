@@ -32,7 +32,7 @@
 .emoji-picker-react {
   position: absolute !important;
   z-index: 999;
-  right: 20px;
+  left: 20px;
   bottom: 20px;
 }
 
