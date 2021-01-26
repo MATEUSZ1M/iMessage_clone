@@ -26,6 +26,14 @@
 
 .chat__messages {
   flex: 1;
+  position: relative;
+}
+
+.emoji-picker-react {
+  position: absolute !important;
+  z-index: 999;
+  right: 20px;
+  bottom: 20px;
 }
 
 .chat__input {
@@ -54,6 +62,6 @@
   display: none;
 }
 
-.chat__mic {
+.chat__emojiI {
   display: block;
 }

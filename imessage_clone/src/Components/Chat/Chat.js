@@ -1,17 +1,33 @@
 import React, { useState } from "react";
 import "./Chat.css";
+import Picker from 'emoji-picker-react';
 import { Button, IconButton } from "@material-ui/core";
-import MicNoneIcon from "@material-ui/icons/MicNone";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 
 function Chat() {
   const [input, setInput] = useState("");
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+  const [isToggled, setToggle] = useState(false);
+
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(input, "<- Message");
-
-    setInput("");
+    if(input !== ""){
+      console.log(input, "<- Message");
+  
+      setInput("");
+      setToggle(!isToggled);
+    }else return
   };
+
+
+  const onEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject);
+    setInput(input + emojiObject.emoji)
+    console.log(emojiObject.emoji)
+  };
+
+
 
   return (
     <div className="chat">
@@ -24,7 +40,7 @@ function Chat() {
       </div>
       {/* chat messages */}
       <div className="chat__messages">
-
+        {isToggled && <Picker className='chat__emojiPicker' onEmojiClick={onEmojiClick} />}
       </div>
 
       {/* chat input */}
@@ -40,9 +56,9 @@ function Chat() {
             send message
           </Button>
         </form>
-          <IconButton >
-            <MicNoneIcon className="chat__mic" />
-          </IconButton>
+        <IconButton>
+          <EmojiEmotionsIcon onClick={()=> setToggle(!isToggled)} className="chat__mic" />
+        </IconButton>
       </div>
     </div>
   );
