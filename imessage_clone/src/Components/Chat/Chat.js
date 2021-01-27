@@ -3,21 +3,21 @@ import "./Chat.css";
 import Picker from "emoji-picker-react";
 import { Button, IconButton } from "@material-ui/core";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import Message from "../Message/Message";
 
 function Chat() {
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const [isToggled, setToggle] = useState(false);
 
   const sendMessage = (e) => {
     e.preventDefault();
     if (input !== "") {
-
-      console.log("Message  :",input)
+      console.log("Message  :", input);
       setInput("");
       setToggle(false);
-    }
-    else return
+    } else return;
   };
 
   const onEmojiClick = (event, emojiObject) => {
@@ -39,7 +39,13 @@ function Chat() {
         {isToggled && (
           <Picker className="chat__emojiPicker" onEmojiClick={onEmojiClick} />
         )}
-      {/* message */}
+        {/* message */}
+        <Message />
+        <Message />
+        <Message />
+        <Message />
+        <Message />
+        <Message />
       </div>
       {/* chat input */}
       <div className="chat__input">
