@@ -26,7 +26,7 @@ function App() {
         //user i logged out
         dispatch(logout());
       }
-    });
+    })
   }, []);
 
   return <div className="app">{user ? <Imessage /> : <Login />}</div>;

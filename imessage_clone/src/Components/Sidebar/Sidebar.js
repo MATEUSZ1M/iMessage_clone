@@ -14,23 +14,24 @@ function Sidebar() {
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
-    db.collection("chats").onSnapshot(snapshot => (
-      setChats(snapshot.docs.map(doc => ({
-        id: doc.id,
-        data: doc.data(),
-      })))
-    ))
-      
+    db.collection("chats").onSnapshot((snapshot) =>
+      setChats(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      )
+    );
   }, []);
 
   const addChat = () => {
     const chatName = prompt("Please enter a chat name");
-    
+
     if (chatName) {
-    db.collection("chats").add({
-      chatName: chatName,
-    });
-    } else alert('You trying add epmty chat name 🙄')
+      db.collection("chats").add({
+        chatName: chatName,
+      });
+    } else alert("You trying add epmty chat name 🙄");
   };
 
   return (
@@ -54,8 +55,8 @@ function Sidebar() {
         </IconButton>
       </div>
       <div className="sidebar__chats">
-        {chats.map(({id, data: {chatName}}) => (
-          <SidebarChat key={id} chatName={chatName}/>
+        {chats.map(({ id, data: { chatName } }) => (
+          <SidebarChat key={id} id={id} chatName={chatName} />
         ))}
       </div>
     </div>

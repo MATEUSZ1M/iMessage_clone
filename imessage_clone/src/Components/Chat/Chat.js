@@ -1,23 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Chat.css";
-import Picker from "emoji-picker-react";
 import { Button, IconButton } from "@material-ui/core";
+import Picker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import Message from "../Message/Message";
 
+import { selectChatName, selectChatId } from "../../features/chatSlice";
+import { selectUser } from "../../features/userSlice";
+import { useSelector } from "react-redux";
+import db from "../../features/firebase";
+import firebase from 'firebase/app';
+
 function Chat() {
+  const user = useSelector(selectUser);
   const [input, setInput] = useState("");
+  const chatName = useSelector(selectChatName);
+  const chatId = useSelector(selectChatId);
   const [messages, setMessages] = useState([]);
-  const [chosenEmoji, setChosenEmoji] = useState(null);
+
   const [isToggled, setToggle] = useState(false);
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+
+  useEffect(() => {
+    if (chatId) {
+      db.collection("chats")
+        .doc(chatId)
+        .collection("messages")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) =>
+          setMessages(
+            snapshot.docs.map((doc) => ({
+              id: doc.id,
+              data: doc.data(),
+            }))
+          )
+        );
+    }
+  }, [chatId]);
 
   const sendMessage = (e) => {
     e.preventDefault();
-    if (input !== "") {
-      console.log("Message  :", input);
-      setInput("");
-      setToggle(false);
-    } else return;
+
+    db.collection("chats").doc(chatId).collection("messages").add({
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      message: input,
+      uid: user.uid,
+      photo: user.photo,
+      email: user.email,
+      displayName: user.displayName,
+    });
+
+    setInput("");
+    setToggle(false);
   };
 
   const onEmojiClick = (event, emojiObject) => {
@@ -30,7 +64,7 @@ function Chat() {
       {/* chat cheader */}
       <div className="chat__header">
         <h4>
-          To: <span className="chat__name">Channel name</span>
+          To: <span className="chat__name">{chatName}</span>
         </h4>
         <strong>Details</strong>
       </div>
@@ -40,12 +74,9 @@ function Chat() {
           <Picker className="chat__emojiPicker" onEmojiClick={onEmojiClick} />
         )}
         {/* message */}
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
+        {messages.map(({ id, data }) => (
+          <Message key={id} contents={data} />
+        ))}
       </div>
       {/* chat input */}
       <div className="chat__input">
