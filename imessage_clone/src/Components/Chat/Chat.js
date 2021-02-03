@@ -4,12 +4,13 @@ import { Button, IconButton } from "@material-ui/core";
 import Picker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import Message from "../Message/Message";
+import FlipMove from "react-flip-move";
 
 import { selectChatName, selectChatId } from "../../features/chatSlice";
 import { selectUser } from "../../features/userSlice";
 import { useSelector } from "react-redux";
 import db from "../../features/firebase";
-import firebase from 'firebase/app';
+import firebase from "firebase/app";
 
 function Chat() {
   const user = useSelector(selectUser);
@@ -26,7 +27,7 @@ function Chat() {
       db.collection("chats")
         .doc(chatId)
         .collection("messages")
-        .orderBy("timestamp", "desc")
+        .orderBy("timestamp", "asc")
         .onSnapshot((snapshot) =>
           setMessages(
             snapshot.docs.map((doc) => ({
@@ -74,9 +75,12 @@ function Chat() {
           <Picker className="chat__emojiPicker" onEmojiClick={onEmojiClick} />
         )}
         {/* message */}
-        {messages.map(({ id, data }) => (
-          <Message key={id} contents={data} />
-        ))}
+        <FlipMove 
+           >
+          {messages.map(({ id, data }) => (
+            <Message key={id} contents={data} />
+          ))}
+        </FlipMove>
       </div>
       {/* chat input */}
       <div className="chat__input">
