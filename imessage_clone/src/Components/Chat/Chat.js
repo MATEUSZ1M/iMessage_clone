@@ -3,6 +3,8 @@ import "./Chat.css";
 import { Button, IconButton } from "@material-ui/core";
 import Picker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import ScrollableFeed from "react-scrollable-feed";
+
 import Message from "../Message/Message";
 import FlipMove from "react-flip-move";
 
@@ -12,7 +14,7 @@ import { useSelector } from "react-redux";
 import db from "../../features/firebase";
 import firebase from "firebase/app";
 
-function Chat() {
+const Chat = () => {
   const user = useSelector(selectUser);
   const [input, setInput] = useState("");
   const chatName = useSelector(selectChatName);
@@ -42,16 +44,18 @@ function Chat() {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    db.collection("chats").doc(chatId).collection("messages").add({
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      message: input,
-      uid: user.uid,
-      photo: user.photo,
-      email: user.email,
-      displayName: user.displayName,
-    });
+    if (input !== "") {
+      db.collection("chats").doc(chatId).collection("messages").add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        message: input,
+        uid: user.uid,
+        photo: user.photo,
+        email: user.email,
+        displayName: user.displayName,
+      });
+      setInput("");
+    }
 
-    setInput("");
     setToggle(false);
   };
 
@@ -59,6 +63,8 @@ function Chat() {
     setChosenEmoji(emojiObject);
     chosenEmoji ? setInput(input + emojiObject.emoji) : setInput(input);
   };
+
+  
 
   return (
     <div className="chat">
@@ -75,12 +81,13 @@ function Chat() {
           <Picker className="chat__emojiPicker" onEmojiClick={onEmojiClick} />
         )}
         {/* message */}
-        <FlipMove 
-           >
-          {messages.map(({ id, data }) => (
-            <Message key={id} contents={data} />
-          ))}
-        </FlipMove>
+        <ScrollableFeed>
+          <FlipMove>
+            {messages.map(({ id, data }) => (
+              <Message key={id} contents={data} />
+            ))}
+          </FlipMove>
+        </ScrollableFeed>
       </div>
       {/* chat input */}
       <div className="chat__input">
@@ -101,6 +108,6 @@ function Chat() {
       </div>
     </div>
   );
-}
+};
 
 export default Chat;
