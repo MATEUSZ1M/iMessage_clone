@@ -4,6 +4,7 @@ import { Button, IconButton } from "@material-ui/core";
 import Picker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import ScrollableFeed from "react-scrollable-feed";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 import Message from "../Message/Message";
 import FlipMove from "react-flip-move";
@@ -44,7 +45,7 @@ const Chat = () => {
   const sendMessage = (e) => {
     e.preventDefault();
 
-    if (input !== "") {
+    if (input !== "" && chatId) {
       db.collection("chats").doc(chatId).collection("messages").add({
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         message: input,
@@ -64,7 +65,14 @@ const Chat = () => {
     chosenEmoji ? setInput(input + emojiObject.emoji) : setInput(input);
   };
 
-  
+  const removeChat = () => {
+    if (chatId) {
+      let r = window.confirm("Are you shure that you want to delete this chat?");
+      if (r === true) {
+        db.collection("chats").doc(chatId).delete();
+      }
+    }
+  };
 
   return (
     <div className="chat">
@@ -73,7 +81,9 @@ const Chat = () => {
         <h4>
           To: <span className="chat__name">{chatName}</span>
         </h4>
-        <strong>Details</strong>
+        <IconButton className="chat__delete" onClick={removeChat}>
+          <DeleteForeverIcon />
+        </IconButton>
       </div>
       {/* chat messages */}
       <div className="chat__messages">

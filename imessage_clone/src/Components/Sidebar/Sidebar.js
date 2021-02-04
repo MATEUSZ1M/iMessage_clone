@@ -12,7 +12,7 @@ import db, { auth } from "../../features/firebase";
 function Sidebar() {
   const user = useSelector(selectUser);
   const [chats, setChats] = useState([]);
-
+  
   useEffect(() => {
     db.collection("chats").onSnapshot((snapshot) =>
       setChats(
@@ -21,9 +21,9 @@ function Sidebar() {
           data: doc.data(),
         }))
       )
-    );
+      );
   }, []);
-
+  
   const addChat = () => {
     const chatName = prompt("Please enter a chat name");
 
@@ -32,6 +32,20 @@ function Sidebar() {
         chatName: chatName,
       });
     } else alert("You trying add epmty chat name 🙄");
+  };
+
+  const filterList = (e) => {
+    // let chatF = chats.map(({id, data: { chatName } }) => {
+    //   return ( chatName[id] )
+    // });
+    // console.log(chatF)
+
+    // chatF = chatF.filter((item) => {
+    // return item.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
+    // });
+
+    console.log(chats.map());
+  
   };
 
   return (
@@ -44,7 +58,7 @@ function Sidebar() {
         />
         <div className="sidebar__input">
           <SearchIcon />
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" onChange={filterList} />
         </div>
         <IconButton
           onClick={addChat}

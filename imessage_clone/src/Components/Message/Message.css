@@ -5,23 +5,26 @@
   width: fit-content;
   justify-content: space-between;
   margin: 25px;
+  word-wrap: break-word;
 }
 
 .message > p {
+  max-width: 400px;
   font-size: 1.1rem;
   padding: 15px;
-  border-radius: 999px;
+  border-radius: 20px;
   margin-right: auto;
   margin: 10px;
   background: #f5f5f5;
+  
 }
 .message__sender{
   margin-left: auto;
+  color: #f5f5f5;
 }
 
 .message__sender > .message__photo {
   order: 1;
-  margin: 15px;
 }
 
 .message__photo {
@@ -34,8 +37,12 @@
 
 .message > small {
   position: absolute;
-  bottom: -5px;
-  right: 5px;
+  bottom: -8px;
+  margin-left: 5px;
   font-size: 9px;
   color: #808080;
+}
+
+.message__sender > small{
+  right: 5px;
 }
